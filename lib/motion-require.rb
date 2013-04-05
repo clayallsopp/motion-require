@@ -4,6 +4,11 @@ require_relative 'motion-require/ext'
 
 module Motion
   module Require
+
+    class << self
+      attr_accessor :require_relative_enabled
+    end
+
     class RequireBuilder < Ripper::SexpBuilder
       REQUIREMENT_TOKENS = %w[motion_require require_relative]
 
@@ -15,10 +20,17 @@ module Motion
 
       def on_command(command, args) # scanner event
         type, name, position = command
-        if REQUIREMENT_TOKENS.include?(name)
+        if valid_require_command(name)
           file = parse_args(args)
           requires << file
         end
+      end
+
+      def valid_require_command(name)
+        if name == 'require_relative' && !Motion::Require.require_relative_enabled
+          raise NoMethodError, 'require_relative is not enabled, see Motion::Require.require_relative_enabled'
+        end
+        REQUIREMENT_TOKENS.include?(name)
       end
 
       def parse_args(args)
