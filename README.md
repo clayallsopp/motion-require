@@ -39,7 +39,15 @@ Can also add to your `Gemfile` etc
 
 motion-require uses static analysis (via [`ripper`](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/ripper/rdoc/Ripper.html)) to find the files using `motion_require` and automatically add the declared dependencies to `Motion::Project::Config#dependencies`. Then the `Kernel#motion_require` method is overriden at compile-time to be a noop.
 
-The paths attached to `motion_require` are treated like those with `require_relative`.
+The paths attached to `motion_require` are treated like those with `require_relative`. If you want to use `require_relative` instead of `motion_require`, you can enable this:
+
+```ruby
+require 'motion-require'
+Motion::Require.require_relative_enabled = true
+
+# now Motion::Require will detect require_relative
+Motion::Require.all(Dir.glob("app/**/*.rb"))
+```
 
 ## Contact
 
