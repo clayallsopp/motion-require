@@ -4,7 +4,7 @@ require 'motion-require/ext'
 module Motion
   module Require
     class RequireBuilder < Ripper::SexpBuilder
-      REQUIREMENT_TOKEN = "motion_require"
+      REQUIREMENT_TOKENS = %w[motion_require require_relative]
 
       attr_accessor :requires
 
@@ -14,7 +14,7 @@ module Motion
 
       def on_command(command, args) # scanner event
         type, name, position = command
-        if name == REQUIREMENT_TOKEN
+        if REQUIREMENT_TOKENS.include?(name)
           file = parse_args(args)
           requires << file
         end
