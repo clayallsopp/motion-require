@@ -109,7 +109,7 @@ module Motion
     # RubyMotion prefers relative paths to be explicitly prefixed with ./
     def explicit_relative(path)
       # Paths that do not start with "/", "./", or "../" will be prefixed with ./
-      path.sub(%r(^(?!\.{1,2}/)), './')
+      path.sub(%r(^(?!\.{0,2}/)), './')
     end
 
     def ext_file
