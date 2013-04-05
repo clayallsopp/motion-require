@@ -77,7 +77,7 @@ module Motion
             if required[-3..-1] != ".rb"
               required += ".rb"
             end
-            absolute_path(file_path, required)
+            resolve_path(file_path, required)
           }
           dependencies[file_path].unshift ext_file
         end
@@ -91,20 +91,25 @@ module Motion
       parser.requires
     end
 
-    def absolute_path(source, required)
-      File.expand_path(File.join(File.dirname(source), required.to_str))
+    # Join `required` to directory containing `source`.
+    # Preserves relative/absolute nature of source
+    def resolve_path(source, required)
+      File.join(File.dirname(source), required.to_str)
     end
 
     def all(files)
       Motion::Project::App.setup do |app|
         app.files << ext_file
-        files.each do |file|
-          app.files << file
-        end
-
+        app.files |= files.map { |f| explicit_relative(f) }
         dependencies = dependencies_for(files)
         app.files_dependencies dependencies
       end
+    end
+
+    # RubyMotion prefers relative paths to be explicitly prefixed with ./
+    def explicit_relative(path)
+      # Paths that do not start with "/", "./", or "../" will be prefixed with ./
+      path.sub(%r(^(?!\.{1,2}/)), './')
     end
 
     def ext_file
