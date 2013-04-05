@@ -12,4 +12,6 @@ Gem::Specification.new do |s|
 
   s.files         = `git ls-files`.split($\)
   s.require_paths = ["lib"]
+  s.test_files  = Dir.glob("spec/**/*.rb")
+  s.add_development_dependency 'rspec', '~> 2.5'
 end
