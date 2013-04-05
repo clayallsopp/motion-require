@@ -56,10 +56,17 @@ module Motion
         requires = requires_in(file_path)
         if !requires.empty?
           dependencies[file_path] = requires.map { |required|
-            if required[-3..-1] != ".rb"
-              required += ".rb"
+            required_path = resolve_path(file_path, required)
+            if !File.exist?(required_path) && File.extname(required) != ".rb"
+              required_path += ".rb"
             end
-            resolve_path(file_path, required)
+
+            if !File.exist?(required_path)
+              # TODO: Report line number of failing require
+              raise LoadError, "ERROR! In `#{file_path}', could not require `#{required}', file not found."
+            end
+
+            required_path
           }
           dependencies[file_path].unshift ext_file
         end
