@@ -1,4 +1,5 @@
 require 'ripper'
+require 'pathname'
 
 # Hack until HipByte accepts https://github.com/HipByte/RubyMotion/pull/82
 # Stolen from BubbleWrap
@@ -94,7 +95,7 @@ module Motion
     # Join `required` to directory containing `source`.
     # Preserves relative/absolute nature of source
     def resolve_path(source, required)
-      File.join(File.dirname(source), required.to_str)
+      Pathname.new(source).dirname.join(required.to_str).cleanpath.to_path
     end
 
     def all(files)
