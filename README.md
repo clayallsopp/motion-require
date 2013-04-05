@@ -27,7 +27,7 @@ end
 ![Whoa.](http://i.imgur.com/JLpjqkk.jpg)
 
 It's used in:
-- [Formotion](https://github.com/clayallsopp/formotion).
+- [Formotion](https://github.com/clayallsopp/formotion)
 
 ## Installation
 
