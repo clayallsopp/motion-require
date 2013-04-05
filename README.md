@@ -24,6 +24,11 @@ Motion::Project::App.setup do |app|
 end
 ```
 
+![Whoa.](http://i.imgur.com/JLpjqkk.jpg)
+
+It's used in:
+- [Formotion](https://github.com/clayallsopp/formotion).
+
 ## Installation
 
 `gem install motion-require`
@@ -34,9 +39,7 @@ Can also add to your `Gemfile` etc
 
 motion-require uses static analysis (via [`ripper`](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/ripper/rdoc/Ripper.html)) to find the files using `motion_require` and automatically add the declared dependencies to `Motion::Project::Config#dependencies`. Then the `Kernel#motion_require` method is overriden at compile-time to be a noop.
 
-![Whoa.](http://i.imgur.com/JLpjqkk.jpg)
-
-The paths attached to `motion_require` are treated like those in `require_relative`.
+The paths attached to `motion_require` are treated like those with `require_relative`.
 
 ## Contact
 
