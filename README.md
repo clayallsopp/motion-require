@@ -17,7 +17,7 @@ end
 require 'motion/project'
 
 require 'motion-require'
-Motion::Require.all(Dir.glob("app/**/*.rb"))
+Motion::Require.all
 
 Motion::Project::App.setup do |app|
   # ...
@@ -25,6 +25,12 @@ end
 ```
 
 ![Whoa.](http://i.imgur.com/JLpjqkk.jpg)
+
+To enable `require_motion` for only select files:
+
+```ruby
+Motion::Require.all(Dir.glob('app/models/**/*.rb'))
+```
 
 It's used in:
 - [Formotion](https://github.com/clayallsopp/formotion)
