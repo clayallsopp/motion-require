@@ -26,7 +26,7 @@ end
 
 ![Whoa.](http://i.imgur.com/JLpjqkk.jpg)
 
-To enable `require_motion` for only select files:
+To enable `motion_require` for only select files:
 
 ```ruby
 Motion::Require.all(Dir.glob('app/models/**/*.rb'))
