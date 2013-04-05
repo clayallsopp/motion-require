@@ -17,7 +17,7 @@ end
 require 'motion/project'
 
 require 'motion-require'
-Motion::Require.all(Dir.glob("app/**/*.rb")
+Motion::Require.all(Dir.glob("app/**/*.rb"))
 
 Motion::Project::App.setup do |app|
   # ...
