@@ -89,7 +89,7 @@ module Motion
     # Scan specified files. When nil, fallback to RubyMotion's default (app/**/*.rb).
     def all(files=nil)
       Motion::Project::App.setup do |app|
-        app.files << ext_file
+        app.files.insert 0, ext_file
         app.files |= Array(files).map { |f| explicit_relative(f) }
         dependencies = dependencies_for(files || app.files)
         app.files_dependencies dependencies
