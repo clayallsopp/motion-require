@@ -91,16 +91,15 @@ module Motion
       Motion::Project::App.setup do |app|
         if files.nil? || files.empty?
           app.files_dependencies dependencies_for(app.files)
-          return
-        end
-
+        else
         # Place files prior to those in ./app, otherwise at the end.
-        preceding_app = app.files.index { |f| f =~ %r(^(?:\./)?app/) } || -1
-        required = Array(files).map { |f| explicit_relative(f) }
-        app.files.insert(preceding_app, ext_file, *required)
-        app.files.uniq! # Prevent redundancy
+          preceding_app = app.files.index { |f| f =~ %r(^(?:\./)?app/) } || -1
+          required = Array(files).map { |f| explicit_relative(f) }
+          app.files.insert(preceding_app, ext_file, *required)
+          app.files.uniq! # Prevent redundancy
 
-        app.files_dependencies dependencies_for(required)
+          app.files_dependencies dependencies_for(required)
+        end
       end
     end
 
