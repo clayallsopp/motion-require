@@ -37,6 +37,7 @@ You **should not** use `app.files <<` in your `setup` block if using motion-requ
 It's used in:
 - [Formotion](https://github.com/clayallsopp/formotion)
 - [MotionSupport](https://github.com/tkadauke/motion-support)
+- [Basecamp](https://itunes.apple.com/us/app/id599139477) ([ref](https://twitter.com/qrush/status/343324117140897792))
 
 ## Installation
 
