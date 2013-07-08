@@ -90,6 +90,7 @@ module Motion
     def all(files=nil)
       Motion::Project::App.setup do |app|
         if files.nil? || files.empty?
+          app.files.push ext_file
           app.files_dependencies dependencies_for(app.files)
         else
         # Place files prior to those in ./app, otherwise at the end.
