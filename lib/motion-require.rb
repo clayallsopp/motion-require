@@ -91,7 +91,7 @@ module Motion
       Motion::Project::App.setup do |app|
         if files.nil? || files.empty?
           app.files.push ext_file
-          app.files_dependencies dependencies_for(app.files)
+          app.files_dependencies dependencies_for(app.files.flatten)
         else
         # Place files prior to those in ./app, otherwise at the end.
           preceding_app = app.files.index { |f| f =~ %r(^(?:\./)?app/) } || -1
