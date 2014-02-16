@@ -1,6 +1,5 @@
 require 'ripper'
 require 'pathname'
-require_relative 'motion-require/ext'
 
 module Motion
   module Require
