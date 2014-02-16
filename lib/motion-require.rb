@@ -88,13 +88,17 @@ module Motion
     # Scan specified files. When nil, fallback to RubyMotion's default (app/**/*.rb).
     def all(files=nil)
       Motion::Project::App.setup do |app|
+        app.exclude_from_detect_dependencies << ext_file
+
         if files.nil? || files.empty?
           app.files.push ext_file
+          app.exclude_from_detect_dependencies += app.files
           app.files_dependencies dependencies_for(app.files.flatten)
         else
         # Place files prior to those in ./app, otherwise at the end.
           preceding_app = app.files.index { |f| f =~ %r(^(?:\./)?app/) } || -1
           required = Array(files).map { |f| explicit_relative(f) }
+          app.exclude_from_detect_dependencies += required
           app.files.insert(preceding_app, ext_file, *required)
           app.files.uniq! # Prevent redundancy
 
