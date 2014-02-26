@@ -86,8 +86,21 @@ module Motion
     end
 
     # Scan specified files. When nil, fallback to RubyMotion's default (app/**/*.rb).
-    def all(files=nil)
+    def all(files=nil, options={})
+      # if you want the default 'app.files', you can just pass in the options
+      if files.is_a?(Hash) && options == {}
+        options = files
+        files = nil
+      end
+
+      check_platform = options.fetch(:platform, nil)
+
       Motion::Project::App.setup do |app|
+        current_platform = app.respond_to?(:template) ? app.template : :ios
+        if check_platform && check_platform != current_platform
+          break
+        end
+
         app.exclude_from_detect_dependencies << ext_file
 
         if files.nil? || files.empty?
