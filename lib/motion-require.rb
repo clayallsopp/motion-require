@@ -97,26 +97,38 @@ module Motion
 
       Motion::Project::App.setup do |app|
         current_platform = app.respond_to?(:template) ? app.template : :ios
-        if check_platform && check_platform != current_platform
-          break
+        if Motion::Require.check_platform(current_platform, check_platform)
+          app.exclude_from_detect_dependencies << ext_file
+
+          if files.nil? || files.empty?
+            app.files.push ext_file
+            app.exclude_from_detect_dependencies += app.files
+            app.files_dependencies dependencies_for(app.files.flatten)
+          else
+          # Place files prior to those in ./app, otherwise at the end.
+            preceding_app = app.files.index { |f| f =~ %r(^(?:\./)?app/) } || -1
+            required = Array(files).map { |f| explicit_relative(f) }
+            app.exclude_from_detect_dependencies += required
+            app.files.insert(preceding_app, ext_file, *required)
+            app.files.uniq! # Prevent redundancy
+
+            app.files_dependencies dependencies_for(required)
+          end
         end
+      end
+    end
 
-        app.exclude_from_detect_dependencies << ext_file
-
-        if files.nil? || files.empty?
-          app.files.push ext_file
-          app.exclude_from_detect_dependencies += app.files
-          app.files_dependencies dependencies_for(app.files.flatten)
-        else
-        # Place files prior to those in ./app, otherwise at the end.
-          preceding_app = app.files.index { |f| f =~ %r(^(?:\./)?app/) } || -1
-          required = Array(files).map { |f| explicit_relative(f) }
-          app.exclude_from_detect_dependencies += required
-          app.files.insert(preceding_app, ext_file, *required)
-          app.files.uniq! # Prevent redundancy
-
-          app.files_dependencies dependencies_for(required)
-        end
+    def check_platform(current_platform, check_platform)
+      case check_platform
+      when nil
+        true
+      when Array
+        check_platform.include?(current_platform)
+      when Symbol
+        current_platform == check_platform
+      else
+        puts "Unrecognized value for 'check_platform': #{check_platform.inspect}"
+        false
       end
     end
 
