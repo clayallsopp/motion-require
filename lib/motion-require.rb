@@ -94,11 +94,10 @@ module Motion
       end
 
       check_platform = options.fetch(:platform, nil)
+      current_platform = App.respond_to?(:template) ? App.template : :ios
+      return unless Motion::Require.check_platform(current_platform, check_platform)
 
       Motion::Project::App.setup do |app|
-        current_platform = app.respond_to?(:template) ? app.template : :ios
-        break unless Motion::Require.check_platform(current_platform, check_platform)
-
         app.exclude_from_detect_dependencies << ext_file
 
         if files.nil? || files.empty?
