@@ -30,6 +30,11 @@ To enable `motion_require` for only select files:
 
 ```ruby
 Motion::Require.all(Dir.glob('app/models/**/*.rb'))
+
+# if you're writing a gem that supports iOS and OS X, you might need to filter
+# based on the platform:
+Motion::Require.all(Dir.glob('lib/ios/**/*.rb'), platform: :ios)
+Motion::Require.all(Dir.glob('lib/osx/**/*.rb'), platform: :osx)
 ```
 
 You **should not** use `app.files <<` in your `setup` block if using motion-require; opt to use `Motion::Require.all` and it will be taken care of.
